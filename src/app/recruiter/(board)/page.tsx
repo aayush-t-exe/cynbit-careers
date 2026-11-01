@@ -7,8 +7,12 @@ import { stages, type Stage } from "@/lib/db/schema";
 import { stageInfo } from "@/lib/stages";
 import { ago, hoursSince } from "@/lib/format";
 import { ScorePill } from "@/components/score-pill";
+import { SubmitButton } from "@/components/submit-button";
+import { reloadSamples } from "@/app/actions/recruiter";
 
 export const dynamic = "force-dynamic";
+// Reloading the sample candidates calls the model for each of them.
+export const maxDuration = 60;
 
 const REVIEW_PROMISE_HOURS = 48;
 
@@ -69,6 +73,12 @@ export default async function BoardPage({ searchParams }: { searchParams: Promis
             Clear
           </Link>
         )}
+      </form>
+      <form action={reloadSamples} className="-mt-4 flex flex-wrap items-center gap-3 text-sm text-on-surface-variant">
+        <span>Cards tagged &ldquo;sample&rdquo; are fictional demo candidates.</span>
+        <SubmitButton className="font-semibold text-primary hover:underline" pendingText="Reloading samples…">
+          Reload sample candidates
+        </SubmitButton>
       </form>
 
       {rows.length === 0 ? (

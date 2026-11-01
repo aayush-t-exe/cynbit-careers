@@ -10,6 +10,7 @@ import { createSession, SESSION_COOKIE, verifySession } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 import { stages } from "@/lib/db/schema";
 import { computeAndStoreMatch } from "@/lib/match/store";
+import { reseedSamples } from "@/lib/samples/seed";
 
 async function requireRecruiter() {
   const store = await cookies();
@@ -70,4 +71,10 @@ export async function rerunMatch(formData: FormData) {
   const id = z.uuid().parse(formData.get("id"));
   await computeAndStoreMatch(id);
   revalidatePath(`/recruiter/applications/${id}`);
+}
+
+export async function reloadSamples() {
+  await requireRecruiter();
+  await reseedSamples();
+  revalidatePath("/recruiter", "layout");
 }

@@ -1,4 +1,4 @@
-import type { Stage } from "../src/lib/db/schema";
+import type { Stage } from "@/lib/db/schema";
 
 // Fictional candidates for the demo board. Every row is stored with is_sample = true
 // and shows a "sample" tag, so nobody mistakes them for real applicants.
