@@ -2,17 +2,30 @@
 
 A working prototype of a better hiring flow for [cynbit.in/careers](https://www.cynbit.in/careers), built for Cynbit's Full Stack Developer Intern assessment.
 
-**Live:** https://cynbit-careers-beta.vercel.app · **Report:** [`docs/REPORT.md`](docs/REPORT.md) · **Recruiter demo password:** `cynbit-demo-2026`
+Live: https://cynbit-careers-beta.vercel.app · Report: [`docs/REPORT.md`](docs/REPORT.md) · Recruiter demo password: `cynbit-demo-2026`
 
-> Prototype only. Applications sent here don't reach Cynbit, and the recruiter view is shared with anyone who has this README. Use a test résumé.
+> Prototype only. Applications sent here don't reach Cynbit, and the recruiter view is shared with anyone who has this README. Please use a test résumé.
+
+![Careers page: drop a résumé and see where you fit](docs/screenshots/2-resume-matches.jpg)
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/3-apply-autofilled.jpg" alt="Apply form filled from the résumé"><br><sub>The form fills itself from the résumé</sub></td>
+    <td width="50%"><img src="docs/screenshots/4-candidate-tracker.jpg" alt="Candidate tracker with dated stages"><br><sub>Every candidate gets a private tracker</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/5-recruiter-board.jpg" alt="Recruiter pipeline board"><br><sub>Recruiter board with the 48-hour alert</sub></td>
+    <td width="50%"><img src="docs/screenshots/6-recruiter-match.jpg" alt="Requirement-by-requirement match"><br><sub>Match against the role's own requirements</sub></td>
+  </tr>
+</table>
 
 ## The problem
 
-I went through Cynbit's careers pages as a candidate and as a developer:
+I went through Cynbit's careers pages as a candidate and as a developer. This is what I found:
 
 | On cynbit.in today | Why it matters |
 | --- | --- |
-| The apply form has **22 fields, 21 required**, including date of birth, gender, permanent address and notice period, even for interns | Long forms lose candidates, and most of that data isn't needed to screen anyone (data minimisation under India's DPDP Act, 2023) |
+| The apply form has 22 fields, 21 required, including date of birth, gender, permanent address and notice period, even for interns | Long forms lose candidates, and most of that data isn't needed to screen anyone (data minimisation under India's DPDP Act, 2023) |
 | No résumé upload, only a link field | Candidates have to host their PDF somewhere first |
 | After applying you see a toast, nothing else | The page promises a review "within 48 hours", but nobody can check it |
 | 20 roles, no filters, roles start below three "why us" sections | Hard to find the right role |
@@ -21,17 +34,20 @@ I went through Cynbit's careers pages as a candidate and as a developer:
 
 ## What I built
 
-**For candidates**
-- **Drop a résumé, see where you fit.** The careers page reads a PDF and ranks all 20 roles against it, with a short "why" for the top three.
-- **Apply in about a minute.** The form fills itself from the résumé. Five required inputs instead of twenty-one. It also works with JavaScript turned off.
-- **A private tracker.** Every application gets a link that shows its stage with dates, and any message the team adds.
+### For candidates
 
-**For Cynbit's hiring team** (`/recruiter`)
-- A pipeline board (Applied → In review → Shortlisted → Interview → Offer / Not selected).
-- A count of applications **past the 48-hour review promise**.
-- Each application is checked against **the role's own listed requirements**: met / partly / not shown, each with a quote from the résumé. Opening an application marks it "In review" on the candidate's tracker.
+- You can drop a résumé on the careers page and see where you fit. It reads the PDF and ranks all 20 roles against it, with a short "why" for the top three.
+- Applying takes about a minute. The form fills itself from the résumé, and there are five required inputs instead of twenty-one. It also works with JavaScript turned off.
+- Every application gets a private tracker link that shows its stage with dates, plus any message the team adds.
 
-**For search and sharing**
+### For Cynbit's hiring team (`/recruiter`)
+
+- A pipeline board: Applied → In review → Shortlisted → Interview → Offer / Not selected.
+- A count of applications past the 48-hour review promise.
+- Each application is checked against the role's own listed requirements (met / partly / not shown), each with a quote from the résumé. Opening an application marks it "In review" on the candidate's tracker.
+
+### For search and sharing
+
 - `JobPosting` JSON-LD on all 20 role pages, per-role titles, canonical URLs, a sitemap, and a generated PNG share image per role.
 
 ## Results
@@ -41,27 +57,27 @@ I went through Cynbit's careers pages as a candidate and as a developer:
 | Required inputs to apply | 21 | 5 |
 | Status after applying | a toast | private tracker |
 | Roles with JobPosting data | 0 / 20 | 20 / 20 |
-| Lighthouse mobile, `/careers` | 56 | **94** |
-| Phone LCP, `/careers` | 11.0 s | **2.4 s** |
-| Lighthouse desktop, `/careers` | 87 | **100** |
-| Lighthouse mobile, a role page | 54 | **97** |
+| Lighthouse mobile, `/careers` | 56 | 94 |
+| Phone LCP, `/careers` | 11.0 s | 2.4 s |
+| Lighthouse desktop, `/careers` | 87 | 100 |
+| Lighthouse mobile, a role page | 54 | 97 |
 
 Lighthouse 12.8 medians of 3 runs, both sites tested back to back on the same machine (1 Nov 2026). End-to-end: 23/23 checks pass against the live site, including applying with JavaScript disabled.
 
 ## How the AI part stays honest
 
-Résumé reading and matching use Google Gemini, with guardrails:
+Résumé reading and matching use Google Gemini. These are the guardrails:
 
-1. **Contact details must literally appear in the PDF.** If the model returns an email or phone that isn't in the text, it is thrown away and the rule-based value is used.
-2. **Every "met" needs a quote.** The model must quote the résumé for each requirement; if the quote isn't found in the text, the verdict is downgraded.
-3. **The score is computed in code** from those verdicts (met = 1, partly = ½), never asked of the model.
-4. **The model is told to ignore** name, gender, age, college prestige and location, and to treat the résumé as data (instructions inside a résumé are ignored).
-5. **Rule-based fallback** for everything: if the key is missing, the model times out (12–15 s) or returns bad JSON, parsing and matching still work, and the UI says which engine was used.
-6. **A human moves every stage.** The score helps someone read faster; it doesn't reject anyone.
+1. Contact details must literally appear in the PDF. If the model returns an email or phone that isn't in the text, I throw it away and use the rule-based value.
+2. Every "met" needs a quote. The model has to quote the résumé for each requirement, and if the quote isn't in the text, the verdict is downgraded.
+3. The score is computed in code from those verdicts (met = 1, partly = ½). The model never picks the number.
+4. The model is told to ignore name, gender, age, college prestige and location, and to treat the résumé as data, so instructions written inside a résumé are ignored.
+5. Everything has a rule-based fallback. If the key is missing, the model times out (12-15 s) or it returns bad JSON, parsing and matching still work, and the UI says which engine was used.
+6. A person moves every stage. The score helps someone read faster; it doesn't reject anyone.
 
 ## Stack
 
-Chosen to match Cynbit's own site, so this could be merged rather than rewritten:
+I matched Cynbit's own site so this can be merged into the existing codebase:
 
 | | |
 | --- | --- |
