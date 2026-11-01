@@ -6,11 +6,10 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { getRole } from "@/data/roles";
 import { createSession, SESSION_COOKIE, verifySession } from "@/lib/auth";
 import { getDb, schema } from "@/lib/db";
 import { stages } from "@/lib/db/schema";
-import { assessRoles } from "@/lib/match/assess";
+import { computeAndStoreMatch } from "@/lib/match/store";
 
 async function requireRecruiter() {
   const store = await cookies();
@@ -69,23 +68,6 @@ export async function moveStage(formData: FormData) {
 export async function rerunMatch(formData: FormData) {
   await requireRecruiter();
   const id = z.uuid().parse(formData.get("id"));
-  const db = await getDb();
-  const application = await db.query.applications.findFirst({
-    where: eq(schema.applications.id, id),
-    columns: { roleSlug: true, resumeId: true },
-  });
-  if (!application) return;
-  const resume = await db.query.resumes.findFirst({
-    where: eq(schema.resumes.id, application.resumeId),
-    columns: { text: true, parsed: true },
-  });
-  const role = getRole(application.roleSlug);
-  if (!resume || !role) return;
-
-  const results = await assessRoles([role], resume.text, resume.parsed.skills);
-  await db
-    .update(schema.applications)
-    .set({ match: results.get(role.slug) })
-    .where(eq(schema.applications.id, id));
+  await computeAndStoreMatch(id);
   revalidatePath(`/recruiter/applications/${id}`);
 }

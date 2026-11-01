@@ -58,6 +58,14 @@ export default async function RolePage({ params }: Props) {
           </div>
           <h1 className="display mt-4 max-w-3xl text-4xl sm:text-6xl">{role.title}</h1>
           <p className="mt-4 max-w-2xl text-lg text-on-surface-variant">{role.summary}</p>
+          <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3 rounded-3xl bg-white/70 p-4 text-sm sm:grid-cols-4 lg:hidden">
+            {facts.map(({ label, value }) => (
+              <div key={label}>
+                <dt className="text-[11px] font-bold uppercase tracking-wider text-outline">{label}</dt>
+                <dd className="font-semibold">{value}</dd>
+              </div>
+            ))}
+          </dl>
           <a href="#apply" className="btn btn-primary mt-6 lg:hidden">
             Apply in about a minute
           </a>
@@ -88,6 +96,10 @@ export default async function RolePage({ params }: Props) {
             </h2>
             <p className="mt-3 text-on-surface-variant">
               Five things are required: your résumé, name, email, phone and consent. Everything else is optional.
+            </p>
+            <p className="mt-4 rounded-2xl bg-tertiary-fixed px-4 py-3 text-sm font-semibold text-on-tertiary-fixed">
+              This is a prototype: applications sent here don&apos;t reach Cynbit and the demo recruiter view is shared. Please use a
+              test résumé, not your real one.
             </p>
             <div className="mt-8">
               <ApplyForm roleSlug={role.slug} roleTitle={role.title} isInternship={isInternship} />

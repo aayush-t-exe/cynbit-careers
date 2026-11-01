@@ -190,7 +190,9 @@ export function RoleBrowser({ roles, teams }: { roles: RoleCard[]; teams: string
                           <span className="font-bold text-primary sm:hidden">· {scores[role.slug]}% fit</span>
                         )}
                       </p>
-                      <p className="mt-1.5 hidden text-sm text-outline md:block">{role.summary}</p>
+                      {withoutExperience(role.summary) && (
+                        <p className="mt-1.5 hidden text-sm text-outline md:block">{withoutExperience(role.summary)}</p>
+                      )}
                     </div>
                     <span className={`chip hidden sm:inline-flex ${role.type === "internship" ? "bg-tertiary-fixed text-on-tertiary-fixed" : "bg-primary-fixed/50 text-primary"}`}>
                       {role.type === "internship" ? "Internship" : "Full-time"}
@@ -205,4 +207,9 @@ export function RoleBrowser({ roles, teams }: { roles: RoleCard[]; teams: string
       )}
     </div>
   );
+}
+
+// Full-time summaries on cynbit.in start with "Experience: …", which the meta line already shows.
+function withoutExperience(summary: string) {
+  return summary.replace(/^Experience:[^.]*\.\s*/, "");
 }

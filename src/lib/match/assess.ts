@@ -32,10 +32,7 @@ const jsonSchema = {
         type: "object",
         properties: {
           slug: { type: "string" },
-          summary: {
-            type: "string",
-            description: "Two plain sentences for a recruiter: strongest fit, then the main gap. No praise words.",
-          },
+          summary: { type: "string" },
           checks: {
             type: "array",
             items: {
@@ -71,14 +68,26 @@ function compact(value: string) {
 
 // One model call assesses up to three roles. Each verdict is checked against the
 // résumé: a "met" or "partial" whose quote is not actually in the text is downgraded.
-export async function assessRoles(rolesToCheck: Role[], resumeText: string, resumeSkills: string[]) {
+const summaryStyle = {
+  recruiter: "Write each summary as two plain sentences for a recruiter: the strongest fit, then the main gap.",
+  candidate:
+    'Write each summary as two short sentences to the candidate, using "you": what in your résumé fits, then what to highlight or learn. Friendly, no praise words.',
+};
+
+export async function assessRoles(
+  rolesToCheck: Role[],
+  resumeText: string,
+  resumeSkills: string[],
+  audience: keyof typeof summaryStyle = "recruiter",
+) {
   const fallback = () =>
     new Map(rolesToCheck.map((role) => [role.slug, matchWithRules(role, resumeText, resumeSkills)]));
 
   if (resumeText.trim().length < 80) return fallback();
 
   const raw = await generateJson<unknown>({
-    system,
+    system: `${system}
+${summaryStyle[audience]} Only mention gaps that relate to the listed requirements.`,
     parts: [
       {
         text: JSON.stringify({

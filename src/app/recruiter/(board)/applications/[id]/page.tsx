@@ -10,6 +10,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { getDb, schema } from "@/lib/db";
 import { stages } from "@/lib/db/schema";
 import { formatWhen } from "@/lib/format";
+import { computeAndStoreMatch } from "@/lib/match/store";
 import type { Verdict } from "@/lib/match/types";
 import { stageInfo } from "@/lib/stages";
 
@@ -48,7 +49,7 @@ export default async function ApplicationPage({ params }: { params: Promise<{ id
     db.select().from(schema.events).where(eq(schema.events.applicationId, application.id)).orderBy(asc(schema.events.createdAt)),
   ]);
   const role = getRole(application.roleSlug);
-  const match = application.match;
+  const match = application.match ?? (await computeAndStoreMatch(application.id));
 
   const links = [
     ["LinkedIn", application.linkedin],

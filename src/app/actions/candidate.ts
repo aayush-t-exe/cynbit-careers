@@ -7,6 +7,7 @@ import { z } from "zod";
 import { getRole, roles } from "@/data/roles";
 import { getDb, schema } from "@/lib/db";
 import { assessRoles } from "@/lib/match/assess";
+import { computeAndStoreMatch } from "@/lib/match/store";
 import { rankRoles } from "@/lib/match/rules";
 import type { MatchResult } from "@/lib/match/types";
 import { IntakeError, intakeResume } from "@/lib/resume/intake";
@@ -53,6 +54,7 @@ export async function readResume(formData: FormData): Promise<ReadResumeResult> 
         ranked.map((entry) => entry.role),
         intake.text,
         intake.parsed.skills,
+        "candidate",
       );
       suggestions = ranked
         .map(({ role, score }) => {
@@ -165,19 +167,12 @@ export async function submitApplication(_previous: ApplyState, formData: FormDat
 
   // Use the résumé read earlier on this page if there is one; otherwise read the uploaded file now.
   let resumeId = values.resumeId || null;
-  let resumeText = "";
-  let resumeSkills: string[] = [];
   if (resumeId) {
     const row = await db.query.resumes.findFirst({
       where: and(eq(schema.resumes.id, resumeId), eq(schema.resumes.ipHash, ipHash)),
-      columns: { id: true, text: true, parsed: true },
+      columns: { id: true },
     });
-    if (row) {
-      resumeText = row.text;
-      resumeSkills = row.parsed.skills;
-    } else {
-      resumeId = null;
-    }
+    if (!row) resumeId = null;
   }
   if (!resumeId) {
     const file = formData.get("resume");
@@ -185,8 +180,6 @@ export async function submitApplication(_previous: ApplyState, formData: FormDat
       if (!(file instanceof File) || file.size === 0) throw new IntakeError("Attach your résumé as a PDF.");
       const intake = await intakeResume(file, ipHash);
       resumeId = intake.resumeId;
-      resumeText = intake.text;
-      resumeSkills = intake.parsed.skills;
     } catch (error) {
       const message = error instanceof IntakeError ? error.message : "We couldn't read that file.";
       return { error: message, fieldErrors: { resume: message }, values };
@@ -220,14 +213,11 @@ export async function submitApplication(_previous: ApplyState, formData: FormDat
     note: null,
   });
 
-  // The candidate gets their tracker immediately; the slower match runs after the response.
-  after(async () => {
-    const results = await assessRoles([role], resumeText, resumeSkills);
-    await db
-      .update(schema.applications)
-      .set({ match: results.get(role.slug) })
-      .where(eq(schema.applications.id, application.id));
-  });
+  // The candidate gets their tracker immediately; the slower match runs after the
+  // response. If it fails, the recruiter page computes it on first open.
+  after(() =>
+    computeAndStoreMatch(application.id).catch((error) => console.error("[match] background run failed:", error)),
+  );
 
   redirect(`/applications/${token}?new=1`);
 }

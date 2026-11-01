@@ -228,7 +228,12 @@ function Result({ resume, onReset }: { resume: StoredResume; onReset: () => void
           >
             <MatchRing score={suggestion.score} tone="ink" size={58} delay={`${0.2 + index * 0.15}s`} />
             <div className="min-w-0 flex-1">
-              <p className="font-display text-lg font-bold leading-tight">{suggestion.title}</p>
+              <p className="font-display text-lg font-bold leading-tight">
+                {suggestion.title}
+                {suggestion.score < 40 && (
+                  <span className="chip ml-2 bg-white/10 px-2 py-0.5 align-middle text-[11px] text-on-ink-muted">a stretch</span>
+                )}
+              </p>
               <p className="mt-1 text-sm leading-snug text-on-ink-muted">
                 {suggestion.match?.summary ?? "Based on the skills in your résumé."}
               </p>
