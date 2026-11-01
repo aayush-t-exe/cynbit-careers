@@ -1,0 +1,113 @@
+{
+  "sourceUrl": "https://www.cynbit.in/careers/full-stack-developer-intern",
+  "steps": [
+    {
+      "title": "Basic Information",
+      "fields": [
+        {
+          "label": "Full Name",
+          "required": true
+        },
+        {
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "label": "Phone Number",
+          "required": true
+        },
+        {
+          "label": "WhatsApp Number",
+          "required": true
+        },
+        {
+          "label": "Date of Birth",
+          "required": true
+        },
+        {
+          "label": "Gender",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "Academic & Professional Background",
+      "fields": [
+        {
+          "label": "Highest Qualification",
+          "required": true
+        },
+        {
+          "label": "Degree / Qualification",
+          "required": true
+        },
+        {
+          "label": "Specialization / Major",
+          "required": true
+        },
+        {
+          "label": "College / University",
+          "required": true
+        },
+        {
+          "label": "Graduation Year",
+          "required": true
+        },
+        {
+          "label": "Education Status",
+          "required": true
+        },
+        {
+          "label": "Score System",
+          "required": true
+        },
+        {
+          "label": "Score Value",
+          "required": true
+        },
+        {
+          "label": "Notice Period",
+          "required": true
+        },
+        {
+          "label": "Key Technical Skills",
+          "required": true
+        }
+      ]
+    },
+    {
+      "title": "Location & Presence",
+      "fields": [
+        {
+          "label": "Current City",
+          "required": true
+        },
+        {
+          "label": "Permanent Address",
+          "required": true
+        },
+        {
+          "label": "Portfolio / Resume Link",
+          "required": true
+        },
+        {
+          "label": "LinkedIn Profile URL",
+          "required": true
+        },
+        {
+          "label": "Professional Profiles - GitHub / Behance (Optional)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "title": "Architectural Narrative",
+      "fields": [
+        {
+          "label": "Why Cynbit? / Application Statement",
+          "required": true
+        }
+      ]
+    }
+  ]
+}
