@@ -1,26 +1,361 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Tokens sampled from cynbit.in (its Material 3 theme), so this drops into their codebase.
+  Contrast (WCAG): primary #006067 on surface #f7fafa 7.0:1 · body #3e494a on surface 9.1:1
+  · amber #774e00 on peach #ffddb3 6.1:1 · on-ink #e3f6f7 on ink #032f33 13.6:1
+  · teal #7ad5dd on ink 8.4:1.
+*/
+@theme {
+  --color-primary: #006067;
+  --color-primary-container: #007b83;
+  --color-primary-fixed: #96f1fa;
+  --color-primary-fixed-dim: #7ad5dd;
+  --color-secondary: #12629d;
+  --color-tertiary-fixed: #ffddb3;
+  --color-on-tertiary-fixed: #774e00;
+  --color-surface: #f7fafa;
+  --color-surface-container-low: #f1f4f4;
+  --color-surface-container: #ebeeee;
+  --color-surface-container-high: #e5e9e9;
+  --color-surface-container-highest: #e0e3e3;
+  --color-on-surface: #181c1d;
+  --color-on-surface-variant: #3e494a;
+  --color-outline: #6e797a;
+  --color-outline-variant: #bdc9ca;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-ink: #032f33;
+  --color-ink-2: #04464b;
+  --color-on-ink: #e3f6f7;
+  --color-on-ink-muted: #a9cbcd;
+
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-soft: 0 20px 40px rgb(24 28 29 / 0.06);
+  --shadow-lift: 0 30px 60px -20px rgb(3 47 51 / 0.35);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: var(--font-sans);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-primary-container);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  ::selection {
+    background: var(--color-primary-fixed);
+    color: var(--color-ink);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Cynbit's own headline move: heavy, tight, with one italic teal word. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .display em {
+    font-style: italic;
+    color: var(--color-primary);
+    padding-right: 0.06em;
+  }
+
+  .on-ink .display em {
+    color: var(--color-primary-fixed-dim);
+  }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition:
+      transform 0.4s var(--ease-out-expo),
+      background-color 0.2s,
+      border-color 0.2s,
+      box-shadow 0.4s var(--ease-out-expo);
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 10px 24px -10px rgb(0 96 103 / 0.7);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-container);
+  }
+
+  .btn-ghost {
+    background: white;
+    color: var(--color-primary);
+    border: 1px solid var(--color-outline-variant);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--color-primary);
+  }
+
+  .btn-on-ink {
+    background: var(--color-primary-fixed);
+    color: var(--color-ink);
+  }
+
+  .btn-on-ink:hover {
+    background: white;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .card {
+    background: white;
+    border-radius: 2rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    border-radius: 1rem;
+    border: 1px solid var(--color-outline-variant);
+    background: white;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: var(--color-on-surface);
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+
+  .field::placeholder {
+    color: #707b7c;
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgb(0 123 131 / 0.15);
+  }
+
+  .field[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+
+  /* Ink bands meet the light surface on an elliptical edge instead of a hard line. */
+  .curve-top {
+    position: relative;
+  }
+
+  .curve-top::before {
+    content: "";
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    top: -3rem;
+    height: 6rem;
+    background: inherit;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    pointer-events: none;
+  }
+
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .glow {
+    background:
+      radial-gradient(55% 60% at 78% 40%, rgb(0 123 131 / 0.6), transparent 70%),
+      radial-gradient(40% 50% at 5% 95%, rgb(18 98 157 / 0.35), transparent 70%),
+      linear-gradient(160deg, var(--color-ink-2), var(--color-ink) 60%);
+  }
+
+  .mark-read {
+    background-image: linear-gradient(rgb(150 241 250 / 0.6), rgb(150 241 250 / 0.6));
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-radius: 0.2em;
+    box-decoration-break: clone;
+  }
+}
+
+/*
+  Scroll reveal. The hidden state only applies when JS has run AND motion is allowed
+  (the .motion class is set by an inline script), so content is always visible
+  without JS, to crawlers and under prefers-reduced-motion.
+*/
+.motion [data-reveal]:not(.is-in) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.motion [data-reveal] {
+  transition:
+    opacity 0.9s var(--ease-out-expo),
+    transform 0.9s var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--scan-distance, 420px));
+    opacity: 0;
+  }
+}
+
+@keyframes lift-in {
+  from {
+    opacity: 0;
+    transform: translateX(-24px) scale(0.94);
+  }
+}
+
+@keyframes highlight {
+  from {
+    background-size: 0% 100%;
+  }
+}
+
+@keyframes ring {
+  from {
+    stroke-dashoffset: var(--ring-length);
+  }
+}
+
+@keyframes wash {
+  from {
+    background-color: rgb(150 241 250 / 0.6);
+    border-color: var(--color-primary-container);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(122 213 221 / 0.6);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgb(122 213 221 / 0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scan-beam {
+    animation: scan 2.2s var(--ease-out-expo) 0.3s both;
+  }
+
+  .scan-beam.is-looping {
+    animation: scan 1.6s ease-in-out infinite;
+  }
+
+  .lift-in {
+    animation: lift-in 0.8s var(--ease-out-expo) both;
+    animation-delay: calc(0.9s + var(--i, 0) * 0.28s);
+  }
+
+  .mark-read {
+    animation: highlight 0.6s var(--ease-out-expo) both;
+    animation-delay: calc(0.55s + var(--i, 0) * 0.28s);
+  }
+
+  .ring-fill {
+    animation: ring 1.4s var(--ease-out-expo) both;
+    animation-delay: var(--ring-delay, 2.2s);
+  }
+
+  .pulse-dot {
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .field.autofilled {
+    animation: wash 1.8s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .rise {
+    animation: rise 0.7s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
 }

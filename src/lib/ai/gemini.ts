@@ -7,7 +7,7 @@ export function aiAvailable() {
   return Boolean(process.env.GEMINI_API_KEY);
 }
 
-export const geminiModel = () => process.env.GEMINI_MODEL ?? "gemini-2.5-flash";
+export const geminiModel = () => process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite";
 
 type Part = { text: string } | { inlineData: { mimeType: string; data: string } };
 
