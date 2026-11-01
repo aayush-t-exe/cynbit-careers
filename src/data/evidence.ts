@@ -17,7 +17,7 @@ export const comparisons = [
   { label: "Required inputs to apply", before: "21 (of 22 fields)", after: "5" },
   { label: "Résumé", before: "A link you host yourself", after: "PDF upload that fills the form" },
   { label: "Personal data asked up front", before: "Date of birth, gender, permanent address, notice period", after: "Name, email, phone" },
-  { label: "After you apply", before: "A toast message", after: "A private tracker with dated stages and team messages" },
+  { label: "Right after you apply", before: "A toast; a progress page link comes later by email", after: "A private tracker link with dated stages and team messages" },
   { label: "Which role fits me?", before: "Read 20 cards", after: "Drop your résumé, all 20 roles ranked with reasons" },
   { label: "Finding a role", before: "No filters, roles below three sections", after: "Type, team and search filters, right after the hero" },
   { label: "Google for Jobs", before: "No JobPosting data", after: "JobPosting JSON-LD on all 20 roles" },

@@ -98,8 +98,7 @@ export default async function RolePage({ params }: Props) {
               Five things are required: your résumé, name, email, phone and consent. Everything else is optional.
             </p>
             <p className="mt-4 rounded-2xl bg-tertiary-fixed px-4 py-3 text-sm font-semibold text-on-tertiary-fixed">
-              This is a prototype: applications sent here don&apos;t reach Cynbit and the demo recruiter view is shared. Please use a
-              test résumé, not your real one.
+              This is a prototype: applications sent here don&apos;t reach Cynbit. Please use a test résumé, not your real one.
             </p>
             <div className="mt-8">
               <ApplyForm roleSlug={role.slug} roleTitle={role.title} isInternship={isInternship} />

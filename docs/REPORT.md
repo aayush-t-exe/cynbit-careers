@@ -2,7 +2,7 @@
 
 Aayush Thakur · Full Stack Developer Intern application · 2 Nov 2026
 Live prototype: https://cynbit-careers-beta.vercel.app · Code: https://github.com/aayush-t-exe/cynbit-careers
-Recruiter demo: `/recruiter`, password `cynbit-demo-2026`
+Recruiter view: `/recruiter` (the password is in my submission notes)
 
 ## 1. Summary
 
@@ -27,7 +27,7 @@ I built it on the same stack as cynbit.in (Next.js 15.5 App Router, Server Actio
 | The apply form has 22 fields, 21 marked required, the same for interns and experienced hires | Date of birth, gender, WhatsApp, permanent address, notice period, CGPA scale, a repeatable qualification block, an "architectural narrative" |
 | No résumé upload | Only a "Portfolio / Resume Link" text field; candidates must host the PDF elsewhere |
 | Graduation year defaults to 2025 | Hard-coded default in the form markup |
-| No feedback after applying | A toast, then nothing. The role pages promise review "within 48 hours by our lead technical architects", which candidates can't verify |
+| Little feedback right after applying | The page shows a toast. Cynbit does have a candidate progress page (`/candidate/<id>`, I saw mine through my assessment email), but it shows broad stages without dates, and candidates only reach it later. The role pages promise review "within 48 hours by our lead technical architects", which a candidate can't check when they apply |
 | Hard to find the right role | 20 roles in a card grid with no filters or search, placed below three "why us" sections |
 | No pay, duration or posting date on any role | Checked all 20 role pages |
 
@@ -67,7 +67,7 @@ It covers all four of the brief's categories: functionality (résumé upload, tr
 1. A résumé-first careers page. You drop a PDF on the hero; it is read once and all 20 roles are ranked, with a short explanation for the top three, written to the candidate. The role list then shows a fit score for every role and can be sorted by it. Filters (type, team, search) are kept in the URL.
 2. Role pages with the role text verbatim from cynbit.in, a facts card, `JobPosting` JSON-LD, a canonical URL and a generated share image.
 3. An apply form that takes about a minute. Five inputs are required: résumé, name, email, phone, consent. Everything the résumé contains is filled in and highlighted so the candidate can check it. The form is a plain multipart form posting to a Server Action, so it works with JavaScript disabled (tested).
-4. A candidate tracker at an unguessable URL (144-bit token), showing the current stage, dated history, and any message the team adds.
+4. A candidate tracker at an unguessable URL (144-bit token), showing the current stage, dated history, and any message the team adds. Cynbit already has a candidate progress page; this version is available the moment someone applies, and it updates when a recruiter moves the application on the board.
 5. A recruiter view (`/recruiter`, signed cookie) with counts, a 6-column pipeline board sorted by match, an alert for applications past 48 hours, and a detail page. The detail page shows contact links (including WhatsApp), the PDF, parsed skills, the requirement-by-requirement match with quotes, stage changes with an optional message to the candidate, and history. Opening an application moves it to "In review" automatically, so the candidate sees that someone has looked.
 
 ## 6. Technical choices
@@ -152,7 +152,7 @@ Labels are tied to inputs, errors are linked with `aria-describedby`, and `aria-
 | --- | --- | --- |
 | Required inputs to apply | 21 | 5 |
 | Résumé upload | No (link only) | Yes, fills the form |
-| Status after applying | Toast | Private tracker |
+| Status right after applying | Toast (progress page link arrives later by email) | Private tracker link with dated stages |
 | JobPosting structured data | 0 of 20 roles | 20 of 20 |
 | Share image | SVG (not rendered) | PNG per role |
 | Apply without JavaScript | No | Yes |
@@ -168,7 +168,7 @@ These are Lighthouse 12.8 medians of 3 runs per preset. I tested the two sites b
 
 ## 9. Limitations
 
-- Demo data is shared. The recruiter password is public so reviewers can try it, and the apply form says so and asks for a test résumé. Sample candidates are stored with `is_sample = true` and labelled on the board.
+- Demo data is shared with whoever has the recruiter password, which is only in my submission notes. The apply form asks for a test résumé. Sample candidates are stored with `is_sample = true` and labelled on the board.
 - There are no email or WhatsApp notifications yet; the tracker link is shown on screen. Resend (email) or the WhatsApp Business API would be the next step.
 - cynbit.in shows no posting date, so `datePosted` in the JSON-LD uses the date the roles were copied. In production it should come from the jobs table.
 - On the Gemini free tier, Google may use prompts to improve its products. For real candidates' data, Cynbit should use a paid key (which excludes that) or a model it hosts.

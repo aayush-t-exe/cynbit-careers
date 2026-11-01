@@ -18,7 +18,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
         </p>
         <LoginForm next={next ?? "/recruiter"} />
         <p className="mt-6 rounded-2xl bg-tertiary-fixed px-4 py-3 text-sm text-on-tertiary-fixed">
-          Reviewing this prototype? The password is in the README and the submission notes.
+          Reviewing this prototype? The password is in the submission notes.
         </p>
       </div>
     </div>

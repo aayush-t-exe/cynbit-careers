@@ -2,9 +2,9 @@
 
 A working prototype of a better hiring flow for [cynbit.in/careers](https://www.cynbit.in/careers), built for Cynbit's Full Stack Developer Intern assessment.
 
-Live: https://cynbit-careers-beta.vercel.app · Report: [`docs/REPORT.md`](docs/REPORT.md) · Recruiter demo password: `cynbit-demo-2026`
+Live: https://cynbit-careers-beta.vercel.app · Report: [`docs/REPORT.md`](docs/REPORT.md) · Recruiter view: `/recruiter` (password in my submission notes)
 
-> Prototype only. Applications sent here don't reach Cynbit, and the recruiter view is shared with anyone who has this README. Please use a test résumé.
+> Prototype only. Applications sent here don't reach Cynbit. Please use a test résumé.
 
 ![Careers page: drop a résumé and see where you fit](docs/screenshots/2-resume-matches.jpg)
 
@@ -27,7 +27,7 @@ I went through Cynbit's careers pages as a candidate and as a developer. This is
 | --- | --- |
 | The apply form has 22 fields, 21 required, including date of birth, gender, permanent address and notice period, even for interns | Long forms lose candidates, and most of that data isn't needed to screen anyone (data minimisation under India's DPDP Act, 2023) |
 | No résumé upload, only a link field | Candidates have to host their PDF somewhere first |
-| After applying you see a toast, nothing else | The page promises a review "within 48 hours", but nobody can check it |
+| After applying on the site you see a toast. Cynbit does have a candidate progress page, but the link arrives later by email, and it shows broad stages without dates | The role page promises a review "within 48 hours", which a candidate can't check at the moment they apply |
 | 20 roles, no filters, roles start below three "why us" sections | Hard to find the right role |
 | No `JobPosting` structured data on job pages | The roles can't appear in Google's job search |
 | `/careers` scores 56 on Lighthouse mobile, LCP 11.0 s | Page content starts at `opacity: 0` until ~600 KB of JS runs, plus a 1.14 MB icon font |
@@ -38,7 +38,7 @@ I went through Cynbit's careers pages as a candidate and as a developer. This is
 
 - You can drop a résumé on the careers page and see where you fit. It reads the PDF and ranks all 20 roles against it, with a short "why" for the top three.
 - Applying takes about a minute. The form fills itself from the résumé, and there are five required inputs instead of twenty-one. It also works with JavaScript turned off.
-- Every application gets a private tracker link that shows its stage with dates, plus any message the team adds.
+- Every application gets a private tracker link straight away. It shows each stage with its date, plus any message the team adds. Cynbit already has a candidate progress page; this extends the idea to the moment someone applies and ties it to the recruiter board.
 
 ### For Cynbit's hiring team (`/recruiter`)
 
@@ -55,7 +55,7 @@ I went through Cynbit's careers pages as a candidate and as a developer. This is
 | | cynbit.in | This prototype |
 | --- | --- | --- |
 | Required inputs to apply | 21 | 5 |
-| Status after applying | a toast | private tracker |
+| Status right after applying | a toast | a private tracker link with dated stages |
 | Roles with JobPosting data | 0 / 20 | 20 / 20 |
 | Lighthouse mobile, `/careers` | 56 | 94 |
 | Phone LCP, `/careers` | 11.0 s | 2.4 s |
