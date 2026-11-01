@@ -2,7 +2,7 @@
 
 Aayush Thakur · Full Stack Developer Intern application · 2 Nov 2026
 Live prototype: https://cynbit-careers-beta.vercel.app · Code: https://github.com/aayush-t-exe/cynbit-careers
-Recruiter view: `/recruiter` (the password is in my submission notes)
+Recruiter view: `/recruiter` (the demo password is shown on the sign-in page)
 
 ## 1. Summary
 
@@ -168,7 +168,7 @@ These are Lighthouse 12.8 medians of 3 runs per preset. I tested the two sites b
 
 ## 9. Limitations
 
-- Demo data is shared with whoever has the recruiter password, which is only in my submission notes. The apply form asks for a test résumé. Sample candidates are stored with `is_sample = true` and labelled on the board.
+- Demo data is shared. For reviewers, the sign-in page shows the demo password (controlled by `SHOW_DEMO_PASSWORD`, which a real deployment leaves off), so the apply form asks for a test résumé. Sample candidates are stored with `is_sample = true` and labelled on the board.
 - There are no email or WhatsApp notifications yet; the tracker link is shown on screen. Resend (email) or the WhatsApp Business API would be the next step.
 - cynbit.in shows no posting date, so `datePosted` in the JSON-LD uses the date the roles were copied. In production it should come from the jobs table.
 - On the Gemini free tier, Google may use prompts to improve its products. For real candidates' data, Cynbit should use a paid key (which excludes that) or a model it hosts.

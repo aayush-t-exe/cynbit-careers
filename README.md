@@ -2,9 +2,9 @@
 
 A working prototype of a better hiring flow for [cynbit.in/careers](https://www.cynbit.in/careers), built for Cynbit's Full Stack Developer Intern assessment.
 
-Live: https://cynbit-careers-beta.vercel.app · Report: [`docs/REPORT.md`](docs/REPORT.md) · Recruiter view: `/recruiter` (password in my submission notes)
+Live: https://cynbit-careers-beta.vercel.app · Report: [`docs/REPORT.md`](docs/REPORT.md) · Recruiter view: `/recruiter` (the demo password is shown on the sign-in page)
 
-> Prototype only. Applications sent here don't reach Cynbit. Please use a test résumé.
+> Prototype only. Applications sent here don't reach Cynbit, and anyone reviewing the recruiter view can see them. Please use a test résumé.
 
 ![Careers page: drop a résumé and see where you fit](docs/screenshots/2-resume-matches.jpg)
 
