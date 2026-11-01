@@ -201,6 +201,8 @@
   /* Ink bands meet the light surface on an elliptical edge instead of a hard line. */
   .curve-top {
     position: relative;
+    /* The curve overhangs both sides; clip it sideways without clipping it upwards. */
+    overflow-x: clip;
   }
 
   .curve-top::before {
