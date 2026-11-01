@@ -1,7 +1,7 @@
 # Technical report: rebuilding Cynbit's careers flow
 
 **Author:** Aayush Thakur · **Role applied for:** Full Stack Developer Intern · **Date:** 2 Nov 2026
-**Live prototype:** _LIVE_URL_ · **Code:** https://github.com/aayush-t-exe/cynbit-careers
+**Live prototype:** https://cynbit-careers-beta.vercel.app · **Code:** https://github.com/aayush-t-exe/cynbit-careers
 **Recruiter demo:** `/recruiter`, password `cynbit-demo-2026`
 
 ---
@@ -10,7 +10,7 @@
 
 I audited cynbit.in from a user's and a developer's point of view and chose one area to improve: **hiring**. The careers flow is where Cynbit meets hundreds of applicants, and where its own team spends time every day.
 
-The prototype replaces a 22-field form (21 required, no résumé upload) with a résumé-first flow. A candidate drops a PDF, sees how they fit all 20 roles, applies with five required inputs, and gets a private tracker. Recruiters get a pipeline board, an alert for applications past Cynbit's own 48-hour review promise, and a requirement-by-requirement match with quotes from each résumé. The job pages now carry Google for Jobs data and load much faster than the current ones (section 8).
+The prototype replaces a 22-field form (21 required, no résumé upload) with a résumé-first flow. A candidate drops a PDF, sees how they fit all 20 roles, applies with five required inputs, and gets a private tracker. Recruiters get a pipeline board, an alert for applications past Cynbit's own 48-hour review promise, and a requirement-by-requirement match with quotes from each résumé. The job pages now carry Google for Jobs data, and `/careers` loads its main content in 2.4 s on a phone instead of 11.0 s (Lighthouse mobile 56 → 94).
 
 It is built on the same stack as cynbit.in (Next.js 15.5 App Router, Server Actions, Tailwind v4, Cynbit's own colour tokens), so it can be merged rather than rewritten.
 
@@ -47,8 +47,8 @@ All applications land in one place with no stages, no way to see which ones are 
 
 | `/careers` on cynbit.in | Mobile | Desktop |
 | --- | --- | --- |
-| Lighthouse performance | 56 | 48 |
-| Largest Contentful Paint | 10.9 s | 2.7 s |
+| Lighthouse performance | 56 | 87 |
+| Largest Contentful Paint | 11.0 s | 2.2 s |
 
 The main cause is not the network. The `(marketing)/template.tsx` wrapper renders page content at `opacity: 0` until about 600 KB of JavaScript has run (54 hidden elements on `/careers`). On top of that, a render-blocking 1.14 MB Material Symbols font loads to draw a few dozen icons.
 
@@ -158,12 +158,15 @@ Labels tied to inputs, errors linked with `aria-describedby`, `aria-live` region
 | JobPosting structured data | 0 of 20 roles | 20 of 20 |
 | Share image | SVG (not rendered) | PNG per role |
 | Apply without JavaScript | No | Yes |
-| Lighthouse mobile, `/careers` | 56 | _AFTER_MOBILE_ |
-| LCP mobile, `/careers` | 10.9 s | _AFTER_LCP_ |
-| Lighthouse desktop, `/careers` | 48 | _AFTER_DESKTOP_ |
-| Accessibility, `/careers` | 86–90 | _AFTER_A11Y_ |
+| Lighthouse mobile, `/careers` | 56 | **94** |
+| LCP mobile, `/careers` | 11.0 s | **2.4 s** |
+| Lighthouse desktop, `/careers` | 87 | **100** |
+| Accessibility, `/careers` | 90 | **97** |
+| Lighthouse mobile, a role page | 54 | **97** |
+| LCP mobile, a role page | 11.1 s | **2.3 s** |
+| Lighthouse desktop, a role page | 79 | **100** |
 
-Lighthouse figures are medians of interleaved runs on the same laptop and connection for both sites. The laptop is slow (Lighthouse warns about its CPU), so absolute numbers are pessimistic; the gap between the two sites is the meaningful part.
+Lighthouse 12.8, median of 3 runs per preset; the two sites were tested back to back, alternating, on the same laptop and connection on 1 Nov 2026. The laptop is slow (Lighthouse warns about its CPU), so absolute numbers are pessimistic; the gap between the two sites is the meaningful part. The prototype's SEO score (69) fails only "page is blocked from indexing", which is deliberate (`noindex` on a prototype); with `ALLOW_INDEXING=true` that audit passes.
 
 ## 9. Limitations
 

@@ -43,7 +43,7 @@ export function MatchRing({
       </svg>
       <span
         className={`absolute inset-0 grid place-items-center font-display font-extrabold ${tone === "ink" ? "text-on-ink" : "text-on-surface"}`}
-        style={{ fontSize: size * 0.26 }}
+        style={{ fontSize: size * (score >= 100 ? 0.21 : 0.26) }}
         aria-hidden
       >
         {score}%

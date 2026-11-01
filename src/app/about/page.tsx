@@ -27,11 +27,11 @@ const guardrails = [
 ];
 
 export default function AboutPage() {
-  const after = lighthouse.after;
+  const { before, after } = lighthouse.careers;
   const bigNumbers = [
     { before: "21", after: "5", label: "required inputs to apply" },
     { before: "0", after: "20", label: "roles with Google for Jobs data" },
-    { before: String(lighthouse.before.mobile), after: after.mobile ? String(after.mobile) : "…", label: "Lighthouse mobile, /careers" },
+    { before: String(before.mobile), after: String(after.mobile), label: "Lighthouse mobile score, /careers" },
   ];
 
   return (
@@ -43,7 +43,8 @@ export default function AboutPage() {
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-on-surface-variant">
           I went through cynbit.in as a candidate and as a developer and picked hiring: the flow Cynbit&apos;s team uses every
-          day, and the one hundreds of applicants judge Cynbit by. Everything below was measured on {measuredOn}.
+          day, and the one hundreds of applicants judge Cynbit by. Everything below was measured on {measuredOn}; speed
+          figures are Lighthouse medians with both sites tested back to back.
         </p>
 
         <dl className="mt-12 grid gap-4 sm:grid-cols-3">

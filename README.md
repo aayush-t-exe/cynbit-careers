@@ -2,7 +2,7 @@
 
 A working prototype of a better hiring flow for [cynbit.in/careers](https://www.cynbit.in/careers), built for Cynbit's Full Stack Developer Intern assessment.
 
-**Live:** _added after deploy_ · **Report:** [`docs/REPORT.md`](docs/REPORT.md) · **Recruiter demo password:** `cynbit-demo-2026`
+**Live:** https://cynbit-careers-beta.vercel.app · **Report:** [`docs/REPORT.md`](docs/REPORT.md) · **Recruiter demo password:** `cynbit-demo-2026`
 
 > Prototype only. Applications sent here don't reach Cynbit, and the recruiter view is shared with anyone who has this README. Use a test résumé.
 
@@ -17,7 +17,7 @@ I went through Cynbit's careers pages as a candidate and as a developer:
 | After applying you see a toast, nothing else | The page promises a review "within 48 hours", but nobody can check it |
 | 20 roles, no filters, roles start below three "why us" sections | Hard to find the right role |
 | No `JobPosting` structured data on job pages | The roles can't appear in Google's job search |
-| `/careers` scores 56 on Lighthouse mobile, LCP 10.9 s | Page content starts at `opacity: 0` until ~600 KB of JS runs, plus a 1.14 MB icon font |
+| `/careers` scores 56 on Lighthouse mobile, LCP 11.0 s | Page content starts at `opacity: 0` until ~600 KB of JS runs, plus a 1.14 MB icon font |
 
 ## What I built
 
@@ -33,6 +33,20 @@ I went through Cynbit's careers pages as a candidate and as a developer:
 
 **For search and sharing**
 - `JobPosting` JSON-LD on all 20 role pages, per-role titles, canonical URLs, a sitemap, and a generated PNG share image per role.
+
+## Results
+
+| | cynbit.in | This prototype |
+| --- | --- | --- |
+| Required inputs to apply | 21 | 5 |
+| Status after applying | a toast | private tracker |
+| Roles with JobPosting data | 0 / 20 | 20 / 20 |
+| Lighthouse mobile, `/careers` | 56 | **94** |
+| Phone LCP, `/careers` | 11.0 s | **2.4 s** |
+| Lighthouse desktop, `/careers` | 87 | **100** |
+| Lighthouse mobile, a role page | 54 | **97** |
+
+Lighthouse 12.8 medians of 3 runs, both sites tested back to back on the same machine (1 Nov 2026). End-to-end: 23/23 checks pass against the live site, including applying with JavaScript disabled.
 
 ## How the AI part stays honest
 

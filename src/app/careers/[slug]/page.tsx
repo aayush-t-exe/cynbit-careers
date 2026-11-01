@@ -111,12 +111,10 @@ export default async function RolePage({ params }: Props) {
           <div className="card sticky top-24 p-6">
             <dl className="space-y-4">
               {facts.map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex gap-3">
-                  <Icon size={18} className="mt-0.5 shrink-0 text-primary" aria-hidden />
-                  <div>
-                    <dt className="text-xs font-bold uppercase tracking-wider text-outline">{label}</dt>
-                    <dd className="font-semibold">{value}</dd>
-                  </div>
+                <div key={label} className="relative pl-8">
+                  <Icon size={18} className="absolute left-0 top-0.5 text-primary" aria-hidden />
+                  <dt className="text-xs font-bold uppercase tracking-wider text-outline">{label}</dt>
+                  <dd className="font-semibold">{value}</dd>
                 </div>
               ))}
             </dl>

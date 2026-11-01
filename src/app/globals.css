@@ -21,7 +21,7 @@
   --color-surface-container-highest: #e0e3e3;
   --color-on-surface: #181c1d;
   --color-on-surface-variant: #3e494a;
-  --color-outline: #6e797a;
+  --color-outline: #5f6a6b; /* darker than M3 #6e797a so small text passes AA: 5.3:1 on surface */
   --color-outline-variant: #bdc9ca;
   --color-error: #ba1a1a;
   --color-error-container: #ffdad6;

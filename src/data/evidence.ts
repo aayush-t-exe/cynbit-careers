@@ -1,10 +1,16 @@
-// Every number on /about, with where it came from. Lighthouse: median of 3 interleaved
-// runs, Lighthouse 12.8 mobile preset, same laptop and network for both sites.
+// Every number on /about, with where it came from. Lighthouse 12.8: median of 3 runs per
+// preset, both sites measured back to back on the same laptop and network, 1 Nov 2026.
 export const measuredOn = "1 Nov 2026";
 
 export const lighthouse = {
-  before: { url: "cynbit.in/careers", mobile: 56, lcp: "10.9 s", desktop: 48, a11y: 90 },
-  after: { url: "this prototype /careers", mobile: null as number | null, lcp: null as string | null, desktop: null as number | null, a11y: null as number | null },
+  careers: {
+    before: { mobile: 56, lcp: "11.0 s", desktop: 87, a11y: 90 },
+    after: { mobile: 94, lcp: "2.4 s", desktop: 100, a11y: 97 },
+  },
+  rolePage: {
+    before: { mobile: 54, lcp: "11.1 s", desktop: 79, a11y: 81 },
+    after: { mobile: 97, lcp: "2.3 s", desktop: 100, a11y: 97 },
+  },
 };
 
 export const comparisons = [
@@ -17,6 +23,7 @@ export const comparisons = [
   { label: "Google for Jobs", before: "No JobPosting data", after: "JobPosting JSON-LD on all 20 roles" },
   { label: "Link previews", before: "SVG logo (not shown by LinkedIn or WhatsApp)", after: "A PNG card per role" },
   { label: "Without JavaScript", before: "Form doesn't submit", after: "Form submits, tracker loads" },
+  { label: "Phone load time (LCP), /careers", before: "11.0 s", after: "2.4 s" },
   { label: "Recruiter side", before: "One shared inbox", after: "Pipeline board, 48-hour promise alert, requirement-by-requirement match" },
 ];
 
